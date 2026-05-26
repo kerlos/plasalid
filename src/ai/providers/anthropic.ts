@@ -13,7 +13,7 @@ export function createAnthropicProvider(opts: {
 
   return {
     name: "anthropic",
-    supportsThinking: true,
+    supportsThinking: !opts.baseURL,
     acceptsDocuments: true,
 
     async sendMessage(params: SendMessageParams): Promise<NormalizedResponse> {
