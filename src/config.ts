@@ -13,6 +13,7 @@ export interface PlasalidConfig {
   providerType: "anthropic" | "openai" | "gemini" | "openai-compat";
   anthropicKey: string;
   anthropicModel: string;
+  anthropicBaseURL: string;
   openaiKey: string;
   openaiModel: string;
   geminiKey: string;
@@ -65,6 +66,8 @@ function buildConfig(): PlasalidConfig {
     anthropicKey: process.env.ANTHROPIC_API_KEY || file.anthropicKey || "",
     anthropicModel:
       process.env.ANTHROPIC_MODEL || file.anthropicModel || "claude-sonnet-4-6",
+    anthropicBaseURL:
+      process.env.ANTHROPIC_BASE_URL || file.anthropicBaseURL || "",
     openaiKey: process.env.OPENAI_API_KEY || file.openaiKey || "",
     openaiModel: process.env.OPENAI_MODEL || file.openaiModel || "gpt-5.4-mini",
     openaiCompatKey:

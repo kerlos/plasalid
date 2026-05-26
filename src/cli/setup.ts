@@ -224,13 +224,31 @@ async function promptApiKey(opts: {
 }
 
 async function promptAnthropicCredentials(): Promise<Partial<PlasalidConfig>> {
+  const keyLabel = process.env.ANTHROPIC_API_KEY
+    ? "Paste your Anthropic API key (https://console.anthropic.com) (leave empty to import from env)"
+    : "Paste your Anthropic API key (https://console.anthropic.com)";
   const anthropicKey = await promptApiKey({
-    label: "Paste your Anthropic API key (https://console.anthropic.com)",
+    label: keyLabel,
     existing: config.anthropicKey,
     prefix: "sk-",
   });
   const anthropicModel = await promptModelInput("anthropic");
-  return { providerType: "anthropic", anthropicKey, anthropicModel };
+  const anthropicBaseURL = await inputPrompt({
+    name: "baseURL",
+    message: "Anthropic base URL (optional — press Enter to use official API)",
+    default: config.anthropicBaseURL || undefined,
+    validate: (v) =>
+      v === "" ||
+      v.startsWith("http://") ||
+      v.startsWith("https://") ||
+      "Must start with http:// or https://",
+  });
+  return {
+    providerType: "anthropic",
+    anthropicKey,
+    anthropicModel,
+    anthropicBaseURL,
+  };
 }
 
 async function promptOpenAICredentials(): Promise<Partial<PlasalidConfig>> {

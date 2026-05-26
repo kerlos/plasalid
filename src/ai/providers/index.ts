@@ -10,7 +10,10 @@ let cached: Provider | null = null;
 function buildProvider(): Provider {
   switch (config.providerType) {
     case "anthropic":
-      return createAnthropicProvider({ apiKey: config.anthropicKey });
+      return createAnthropicProvider({
+        apiKey: config.anthropicKey,
+        ...(config.anthropicBaseURL && { baseURL: config.anthropicBaseURL }),
+      });
     case "openai":
       return createOpenAIProvider({ apiKey: config.openaiKey });
     case "gemini":
